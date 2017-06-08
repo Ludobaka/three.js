@@ -533,6 +533,8 @@ WebGLUniforms.upload = function ( gl, seq, values, renderer ) {
 			// note: always updating when .needsUpdate is undefined
 			u.setValue( gl, v.value, renderer );
 
+			v.needsUpdate = false;
+
 		}
 
 	}
@@ -547,6 +549,29 @@ WebGLUniforms.seqWithValue = function ( seq, values ) {
 
 		var u = seq[ i ];
 		if ( u.id in values ) r.push( u );
+
+	}
+
+	return r;
+
+};
+
+WebGLUniforms.updatedList = function( seq, values ) {
+
+	var r = null,
+		n = seq.length;
+
+	for ( var i = 0; i !== n; ++ i ) {
+
+		var u = seq[ i ],
+			v = values[ u.id ];
+
+		if ( v && v.needsUpdate === true ) {
+
+			if ( r === null ) r = [];
+			r.push( u );
+
+		}
 
 	}
 

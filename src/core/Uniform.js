@@ -11,13 +11,33 @@ function Uniform( value ) {
 
 	}
 
-	this.value = value;
+	this._value = value;
+
+	this.needsUpdate = true;
 
 }
 
-Uniform.prototype.clone = function () {
+Uniform.prototype = {
 
-	return new Uniform( this.value.clone === undefined ? this.value : this.value.clone() );
+	constructor: Uniform,
+
+	get value() {
+
+		return this._value;
+
+	},
+
+	set value( value ) {
+
+		if ( this.needsUpdate === false && value !== this._value ) {
+
+			this.needsUpdate = true;
+
+		}
+
+		this._value = value;
+
+	}
 
 };
 
